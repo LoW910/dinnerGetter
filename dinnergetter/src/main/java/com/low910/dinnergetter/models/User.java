@@ -22,10 +22,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="users")
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class, 
+  property = "id")
+
 public class User {
 	
 	@Id
@@ -95,10 +102,7 @@ public class User {
     )
     private List<Ingredient> pantry;
     
-    
-    
-	// @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // private List<CommentModel> comments;
+
     
     public User() {
     }

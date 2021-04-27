@@ -6,11 +6,12 @@ function ShoppingList() {
     return (
         <table className="highlight">
             <thead>
-                <tr className="grey darken-1">
-                    <th>Recipe</th>
-                    <th>Missing Ingredient</th>
-                </tr>
-        </thead>
+
+              <tr className="grey darken-1">
+                  <th>Recipe</th>
+                  <th>Missing Ingredient</th>
+              </tr>
+            </thead>
 
         <tbody>
           <tr>

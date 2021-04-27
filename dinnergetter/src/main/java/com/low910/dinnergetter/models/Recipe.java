@@ -18,10 +18,16 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="recipes")
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class, 
+    property = "id")
 public class Recipe {
 
     @Id
@@ -43,7 +49,7 @@ public class Recipe {
     //======================================================================
 	// relationship for recipes created by a user  
 	//======================================================================
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User author;
 
@@ -55,7 +61,7 @@ public class Recipe {
 		name = "users_saved_recipes",
 		joinColumns = @JoinColumn(name = "recipe_id"),
 		inverseJoinColumns = @JoinColumn(name = "user_id")
-		)
+    )
 	private List<User> usersWhoSavedThis;
 
     //======================================================================

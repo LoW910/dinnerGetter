@@ -17,10 +17,18 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="ingredients")
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class, 
+  property = "id")
+  @JsonIgnoreProperties({"usersWhoHaveThis"})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -121,6 +129,7 @@ public class Ingredient {
         this.recipes = recipes;
     }
 
+    
     public List<User> getUsersWhoHaveThis() {
         return this.usersWhoHaveThis;
     }
