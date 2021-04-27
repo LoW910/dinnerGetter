@@ -30,8 +30,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name="users")
 @JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "id")
+    generator = ObjectIdGenerators.PropertyGenerator.class, 
+    property = "id")
 
 public class User {
 	

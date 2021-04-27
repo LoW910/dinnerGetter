@@ -26,9 +26,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name="ingredients")
 @JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "id")
-  @JsonIgnoreProperties({"usersWhoHaveThis"})
+    generator = ObjectIdGenerators.PropertyGenerator.class, 
+    property = "id")
+@JsonIgnoreProperties({"usersWhoHaveThis"})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
