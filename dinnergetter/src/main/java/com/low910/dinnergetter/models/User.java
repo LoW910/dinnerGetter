@@ -17,10 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -36,34 +33,34 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class User {
 	
 	@Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)           //keep
     private Long id;
 
-	@NotEmpty(message = "First name cannot be empty")
+	// @NotEmpty(message = "First name cannot be empty")           // remove
     private String firstName;
 
-	@NotEmpty(message = "Last name cannot be empty")
+	// @NotEmpty(message = "Last name cannot be empty")            //remove
     private String lastName;
 
-	@NotEmpty(message = "Email cannot be empty")
-	@Email(message = "Email must be valid")
+	// // @NotEmpty(message = "Email cannot be empty")                // possibly redundant?
+	@Email(message = "Email must be valid")                     // keep
 	@Column(unique = true)
 	private String email;
 
-	@NotEmpty(message="city is required!")
-    @Size(min=2, max=30, message="City must be between 2 and 30 characters")
+	// @NotEmpty(message="city is required!")                     //remove
+    // @Size(min=2, max=30, message="City must be between 2 and 30 characters") // remove
     private String city;
 
-	@NotEmpty(message="location is required!")
-	@Size(min=2, max=2, message="State must be between 2 characters")
+	// @NotEmpty(message="location is required!")                //remove  
+	// @Size(min=2, max=2, message="State must be between 2 characters")   //remove
 	private String state;
 
-    @Size(min = 5, message = "Password must be greater than 5 characters")
-    private String password;
+    // @Size(min = 5, message = "Password must be greater than 5 characters") //remove
+    // private String password;                                        //remove
 
-    @NotEmpty(message = "Cannot be left empty")
-    @Transient
-    private String passwordConfirmation;
+    // @NotEmpty(message = "Cannot be left empty")                 //remove
+    // @Transient                                                  //remove
+    // private String passwordConfirmation;                        // remove
 
     @Column(updatable=false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -101,7 +98,18 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private List<Ingredient> pantry;
-    
+
+
+    //======================================================================
+	// many to many USERS who have INGREDIENTS (pantry)
+	//======================================================================
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "users_ingredients_shopping",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private List<Ingredient> shoppingList;
 
     
     public User() {
@@ -169,21 +177,6 @@ public class User {
         this.state = state;
     }
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordConfirmation() {
-        return this.passwordConfirmation;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
-    }
 
     public Date getCreatedAt() {
         return this.createdAt;

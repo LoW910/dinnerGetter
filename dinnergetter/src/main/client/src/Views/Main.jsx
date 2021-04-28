@@ -6,10 +6,12 @@ const Main = ({children }) =>{
 
     //manipulate the html
     return(
-        <div className="flex-row">
-            <Nav />
+        <>
+            <div className="navbar-fixed">
+                <Nav />
+            </div>
             { children }
-        </div>
+        </>
     );
 }
 

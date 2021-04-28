@@ -12,5 +12,5 @@ import com.low910.dinnergetter.models.Recipe;
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
     List<Recipe> findAll();
-
+    List<Recipe> findByNameContaining(String name);
 }

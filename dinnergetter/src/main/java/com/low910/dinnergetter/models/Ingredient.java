@@ -28,7 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @JsonIdentityInfo(
     generator = ObjectIdGenerators.PropertyGenerator.class, 
     property = "id")
-@JsonIgnoreProperties({"usersWhoHaveThis"})
+@JsonIgnoreProperties({"usersWhoHaveThis", "usersWhoPutThisOnList"})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -66,6 +66,17 @@ public class Ingredient {
     )
     private List<User> usersWhoHaveThis;
 
+
+    //======================================================================
+	// many-to-many INGREDIENTS in the pantry of USERS
+	//======================================================================
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "users_ingredients_shopping",
+        joinColumns = @JoinColumn(name = "ingredient_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> usersWhoPutThisOnList;
 
     
     

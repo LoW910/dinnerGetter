@@ -7,6 +7,7 @@ import com.low910.dinnergetter.models.Recipe;
 import com.low910.dinnergetter.models.User;
 import com.low910.dinnergetter.services.AppService;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/")
+@CrossOrigin("http://localhost:3000")
 
 public class DinnerAPI {
     private final AppService serv;
@@ -43,11 +44,18 @@ public class DinnerAPI {
         return this.serv.createRecipe(r);
     }
 
+    @PostMapping("recipes/search/name")
+    public List<Recipe> findRecipeByName(@RequestBody Recipe recipe ){
+        
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&" + recipe.getName());
+        System.out.println("============================"+ recipe.getName() );
+        return this.serv.findRecipeByName(recipe.getName());
+    }
+
     @GetMapping("recipes/{rId}")
     public Recipe findRecipeById(@PathVariable("rId") Long rId){
         return this.serv.findRecipeById(rId);
     }
-
 
     //======================================================================
 	// Ingredients  
@@ -59,10 +67,8 @@ public class DinnerAPI {
     }
 
     @PostMapping("ingredients/create")
-    public Ingredient addIngredient(@RequestParam("name") String name) {
-        Ingredient i = new Ingredient();
-        i.setName(name);
-        return this.serv.createIngredient(i);
+    public Ingredient addIngredient(@RequestBody Ingredient ingredient) { 
+        return this.serv.createIngredient(ingredient);
     }
 
     @GetMapping("ingredients/{iId}")
@@ -78,6 +84,20 @@ public class DinnerAPI {
     @GetMapping("users")
     public List<User> findAllUsers(){
         return serv.findAllUsers();
+    }
+
+
+    @PostMapping("/users/checkdb")  //god damn! POS(&!^*@^!@&^&)  change to user instead of string
+    public User checkIfUserExistsAlready(@RequestBody User user){
+        System.out.println("%%%%%%%%%% email: "+ user.getEmail());
+        User u = this.serv.findUserByEmail(user.getEmail());
+        if(u != null){
+            return u;
+        }
+        User newUser = new User();
+        newUser.setEmail(user.getEmail());
+        return this.serv.createUser(newUser);
+        
     }
 
 

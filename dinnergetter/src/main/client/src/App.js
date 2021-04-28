@@ -1,18 +1,30 @@
-import './App.css';
-import Main from "./Views/Main";
-import MyContext from './MyContext';
-import { useState } from 'react';
 import { Router } from "@reach/router";
+import { useState } from 'react';
+import './App.css';
+import MyContext from './MyContext';
 import Home from "./Views/Home";
+import Main from "./Views/Main";
+import LandingPad from "./Components/LandingPad"
 
 function App() {
-  const [ search, setSearch ] = useState("");
+  const [ recipe, setRecipe ] = useState({ name: ""});
+  const [ user, setUser ] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    addedRecipes: [],
+    savedRecipes: [],
+    pantry: [],
+    shoppingList: []
+  });
+  const [ recipes, setRecipes ] = useState([]);
 
   return (
     <div className="App">
-      <MyContext.Provider value = {{ search, setSearch }}>
+      <MyContext.Provider value = {{ recipe, setRecipe, user, setUser }}>
         <Router>
           {/* some router react/reach */}
+          <LandingPad path="/login" />
           <Main path="/">
           {/* Main children, allows us to keep the nav in the same place every time*/}
             <Home path="/" />

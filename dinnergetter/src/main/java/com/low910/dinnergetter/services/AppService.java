@@ -36,7 +36,9 @@ public class AppService {
     public Recipe findRecipeById(Long id){
         return this.rRepo.findById(id).orElse(null);
     }
-
+    public List<Recipe> findRecipeByName(String name){
+        return this.rRepo.findByNameContaining(name);
+    }
 
 
     //======================================================================
@@ -61,13 +63,18 @@ public class AppService {
     public List<User> findAllUsers(){
         return this.uRepo.findAll();
     }
-
-
+    public User findUserByEmail(String email){
+        return (User) this.uRepo.findUserByEmail(email).orElse(null);
+    }
+    public User createUser(User u){
+        return this.uRepo.save(u);
+    }
+    
 
 
 
     //======================================================================
-	// USER STUFF  
+	// RELATIONSHIP STUFF  
 	//======================================================================
     public Recipe addIngredientToRecipe(Long rId, Long iId){
         Recipe r = this.findRecipeById(rId);

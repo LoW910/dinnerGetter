@@ -1,31 +1,61 @@
 import { useContext} from "react";
 import MyContext from "../MyContext";
 import {Link} from "@reach/router";
-
+import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 const Nav = props =>{
-    const { search, setSearch } = useContext(MyContext);
+    
+
+    const { recipe, setRecipe } = useContext(MyContext);
+
+
     const searchHandler = (e) =>{
-        setSearch(e.target.value);
+        setRecipe( {name: e.target.value});
         // axios get request to the backend api to return the saved recipes matching the current string in the search bar
+        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",recipe.name);
+        axios.post("http://localhost:8080/api/recipes/search/name", recipe )
+            .then( res => {
+                console.log(res);
+            }).catch( err => console.log(`Not yo day mf ${err}`));
     }
 
-    return(
-        <div className="d-flex flex-row justify-content-between bg-dark p-2 shadow">
-            <div className="d-flex col-4 justify-content-around">
-                <Link to="/" className="text-decoration-none  text-white">Home</Link> 
-                <Link to="/" className="text-decoration-none text-white">My Recipes</Link>
-                <Link to="/" className="text-decoration-none text-white">Shopping</Link>
-            </div>
-            <div className="d-flex col-4 justify-content-center text-white">
-                <p>Dinner Picker</p>
-            </div>
-            <div className="d-flex col-4 justify-content-end">
-                {/* this will have to talk with our java backend*/ }
-                <form>
-                    <input type="search" placeholder="search" value={search} onChange={(e)=>searchHandler(e)} className="form-control"/>
+
+
+
+
+    return( 
+
+
+        <nav>
+            <div className = "nav-wrapper grey darken-3">
+                <span className="brand-logo center">Dinner Picker</span>
+
+                <ul className="left">
+                    <li><Link to="/" className="text-decoration-none  text-white">Home</Link></li>
+                    <li><Link to="/" className="text-decoration-none text-white">My Recipes</Link></li>
+                    <li><Link to="/" className="text-decoration-none text-white">Shopping</Link></li>
+                </ul>
+                <form className="input-field right">
+
+                        <input
+                            id="search"
+                            type="search"
+                            value={recipe.name}
+                            onChange={(e)=>searchHandler(e)}
+                            onBlur={()=> setRecipe({name:""})}
+                            className="form-control"
+                        />
+
+                        <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                        
+     
                 </form>
             </div>
-        </div>
+        </nav>
+
+
+        
+
     );
 }
 
