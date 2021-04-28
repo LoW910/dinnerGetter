@@ -27,7 +27,10 @@ const LandingPad = () => {
                     shoppingList: res.data.shoppingList
                 });
                 // redirect to the home page automatically
-                navigate("/");
+                
+            })
+            .then(() => {
+                navigate("/dashboard");
             })
             .catch( e => console.error({errors: e}));
 

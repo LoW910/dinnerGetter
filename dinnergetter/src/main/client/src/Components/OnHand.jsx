@@ -1,8 +1,12 @@
-import React, {useState} from 'react'
-import AddIngredientForm from './AddIngredientForm'
+import React, {useState, useContext} from 'react';
+import AddIngredientForm from './AddIngredientForm';
+import MyContext from "../MyContext";
 
 
-function OnHand() {
+
+function OnHand(props) {
+  const {handleChange, handleSubmit, removeFromPantry} = props;
+  const {pantry, ingredient} = useContext(MyContext);
 
   // const [ingredientName, setIngredientName] = useState("");
 
@@ -23,19 +27,29 @@ function OnHand() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="grey lighten-3"><td style={{padding: "0px",}}><AddIngredientForm  /></td></tr>
-                    <tr>
-                      <td>Whiskey</td>
-                    </tr>
-                    <tr>
-                      <td> Water </td>
-                    </tr>
-                    <tr>
-                      <td> Infused Butter </td>
-                    </tr>
-                    <tr>
-                      <td> Something interesting here </td>
-                    </tr>
+                    <tr className="grey lighten-3"><td style={{padding: "0px",}}>
+                      <AddIngredientForm
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
+                        
+                      />
+                    </td></tr>
+                    {pantry?
+                      pantry.map( (ingredient, idx) =>
+                      <tr key={idx}>
+                        <td>
+                          {ingredient.name}
+                          <button
+                            className="btn red darken-3 right"
+                            onClick={(e) => removeFromPantry(e, ingredient)}
+                          >
+                            <i className="material-icons">delete</i>
+                          </button>
+                        </td>
+                      </tr>
+                      )
+                    :
+                    <tr><td>Loading...</td></tr>}
                       
                   </tbody>
                 </table>

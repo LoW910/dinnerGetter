@@ -61,7 +61,7 @@ public class DinnerAPI {
 	// Ingredients  
 	//======================================================================
 
-    @GetMapping("/ingredients")
+    @GetMapping("ingredients")
     public List<Ingredient> findAllIngredients() {
         return this.serv.findAllIngredients();
     }
@@ -74,6 +74,31 @@ public class DinnerAPI {
     @GetMapping("ingredients/{iId}")
     public Ingredient findIngredientById(@PathVariable("iId") Long iId){
         return this.serv.findIngredientById(iId);
+    }
+
+    @PostMapping("ingredients/addtopantry")
+    public boolean addIngredientToPantry(@RequestBody Ingredient ingredient){
+
+        Ingredient i = this.serv.createIngredient(ingredient);
+        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+
+        return this.serv.addIngredientToPantry(u, i);
+        // System.out.println(i.getName());
+        // System.out.println(this.serv.createIngredient(i));
+        // User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+        // System.out.println(u.getEmail());
+        // System.out.println(i.getName());
+
+        // if(u == null || i == null) return;
+        // this.serv.addIngredientToPantry(u, i);
+    }
+
+    @PostMapping("ingredients/removefrompantry")
+    public void removeIngredientFromPantry(@RequestBody Ingredient ingredient){
+        Ingredient i = this.serv.findIngredientByName(ingredient.getName());
+        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+
+        this.serv.removeIngredientFromPantry(u, i);
     }
 
 

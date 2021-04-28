@@ -15,7 +15,7 @@ function Profile() {
     
   
     return (
-      isAuthenticated && (
+
         <div>
             {/* {JSON.stringify(user, null, 2)} */}
             <p></p>
@@ -23,7 +23,7 @@ function Profile() {
             <button onClick={logUser} className="btn purple">Click to log user</button>
             
         </div>
-      )
+
     );
   };
 

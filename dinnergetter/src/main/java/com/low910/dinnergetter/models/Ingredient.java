@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -36,6 +37,9 @@ public class Ingredient {
 
 	@NotEmpty
     private String name;
+
+    @Transient
+    private String dummyUserEmail;
 
     @Column(updatable=false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -149,8 +153,21 @@ public class Ingredient {
         this.usersWhoHaveThis = usersWhoHaveThis;
     }
 
+    public String getDummyUserEmail() {
+        return this.dummyUserEmail;
+    }
 
-    
+    public void setDummyUserEmail(String dummyUserEmail) {
+        this.dummyUserEmail = dummyUserEmail;
+    }
+
+    public List<User> getUsersWhoPutThisOnList() {
+        return this.usersWhoPutThisOnList;
+    }
+
+    public void setUsersWhoPutThisOnList(List<User> usersWhoPutThisOnList) {
+        this.usersWhoPutThisOnList = usersWhoPutThisOnList;
+    }
 
 
 }

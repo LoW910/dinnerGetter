@@ -25,33 +25,34 @@ const Nav = props =>{
 
     return( 
 
+        <div className="navbar-fixed">
+            <nav>
+                <div className = "nav-wrapper grey darken-3">
+                    <span className="brand-logo center">Dinner Picker</span>
 
-        <nav>
-            <div className = "nav-wrapper grey darken-3">
-                <span className="brand-logo center">Dinner Picker</span>
+                    <ul className="left">
+                        <li><Link to="/" className="text-decoration-none  text-white">Home</Link></li>
+                        <li><Link to="/" className="text-decoration-none text-white">My Recipes</Link></li>
+                        <li><Link to="/" className="text-decoration-none text-white">Shopping</Link></li>
+                    </ul>
+                    <form className="input-field right">
 
-                <ul className="left">
-                    <li><Link to="/" className="text-decoration-none  text-white">Home</Link></li>
-                    <li><Link to="/" className="text-decoration-none text-white">My Recipes</Link></li>
-                    <li><Link to="/" className="text-decoration-none text-white">Shopping</Link></li>
-                </ul>
-                <form className="input-field right">
+                            <input
+                                id="search"
+                                type="search"
+                                value={recipe.name}
+                                onChange={(e)=>searchHandler(e)}
+                                onBlur={()=> setRecipe({name:""})}
+                                className="form-control"
+                            />
 
-                        <input
-                            id="search"
-                            type="search"
-                            value={recipe.name}
-                            onChange={(e)=>searchHandler(e)}
-                            onBlur={()=> setRecipe({name:""})}
-                            className="form-control"
-                        />
-
-                        <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                        
-     
-                </form>
-            </div>
-        </nav>
+                            <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                            
+        
+                    </form>
+                </div>
+            </nav>
+        </div>
 
 
         

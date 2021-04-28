@@ -45,16 +45,24 @@ public class AppService {
 	// INGREDIENT STUFF
 	//======================================================================
     
-    public Ingredient createIngredient(Ingredient i){
-        return this.iRepo.save(i);
+    public Ingredient createIngredient(Ingredient ingredient){
+        Ingredient i = (Ingredient) this.findIngredientByName(ingredient.getName());
+        if(i != null){
+            return i;
+        }
+        return this.iRepo.save(ingredient);
+
     }
     public List<Ingredient> findAllIngredients(){
         return this.iRepo.findAll();
     }
-    
+    public Ingredient findIngredientByName(String name){
+        return this.iRepo.findIngredientByName(name).orElse(null);
+    }
     public Ingredient findIngredientById(Long id) {
         return this.iRepo.findById(id).orElse(null);
     }
+    
     
     
     //======================================================================
@@ -86,7 +94,20 @@ public class AppService {
         return this.rRepo.save(r);
     }
 
+    public boolean addIngredientToPantry(User u, Ingredient i){
+        if(!u.getPantry().contains(i)){
+            u.getPantry().add(i);
+            this.uRepo.save(u);
+            return true;
+        }
+        return false;
+    }
 
+    public void removeIngredientFromPantry(User u, Ingredient i){
+        System.out.println("************************************************************************************************************************************************************************");
+        u.getPantry().remove(i);
+        this.uRepo.save(u);
+    }
 
 
 
