@@ -78,26 +78,15 @@ public class DinnerAPI {
 
     @PostMapping("ingredients/addtopantry")
     public boolean addIngredientToPantry(@RequestBody Ingredient ingredient){
-
         Ingredient i = this.serv.createIngredient(ingredient);
         User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
-
         return this.serv.addIngredientToPantry(u, i);
-        // System.out.println(i.getName());
-        // System.out.println(this.serv.createIngredient(i));
-        // User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
-        // System.out.println(u.getEmail());
-        // System.out.println(i.getName());
-
-        // if(u == null || i == null) return;
-        // this.serv.addIngredientToPantry(u, i);
     }
 
     @PostMapping("ingredients/removefrompantry")
     public void removeIngredientFromPantry(@RequestBody Ingredient ingredient){
         Ingredient i = this.serv.findIngredientByName(ingredient.getName());
         User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
-
         this.serv.removeIngredientFromPantry(u, i);
     }
 
@@ -111,8 +100,7 @@ public class DinnerAPI {
         return serv.findAllUsers();
     }
 
-
-    @PostMapping("/users/checkdb")  //god damn! POS(&!^*@^!@&^&)  change to user instead of string
+    @PostMapping("users/checkdb")  //god damn! POS(&!^*@^!@&^&)  change to user instead of string
     public User checkIfUserExistsAlready(@RequestBody User user){
         System.out.println("%%%%%%%%%% email: "+ user.getEmail());
         User u = this.serv.findUserByEmail(user.getEmail());
@@ -125,7 +113,10 @@ public class DinnerAPI {
         
     }
 
-
+    @GetMapping("users/email/{email}")
+    public User findUserByPathEmail(@PathVariable("email") String email){
+        return this.serv.findUserByEmail(email);
+    }
 
 
     //======================================================================

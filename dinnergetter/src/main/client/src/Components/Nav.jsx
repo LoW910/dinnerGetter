@@ -19,20 +19,15 @@ const Nav = props =>{
             }).catch( err => console.log(`Not yo day mf ${err}`));
     }
 
-
-
-
-
     return( 
-
         <div className="navbar-fixed">
             <nav>
                 <div className = "nav-wrapper grey darken-3">
                     <span className="brand-logo center">Dinner Picker</span>
 
                     <ul className="left">
-                        <li><Link to="/" className="text-decoration-none  text-white">Home</Link></li>
-                        <li><Link to="/" className="text-decoration-none text-white">My Recipes</Link></li>
+                        <li><Link to="/dashboard" className="text-decoration-none  text-white">Home</Link></li>
+                        <li><Link to="/recipes/new" className="text-decoration-none text-white">My Recipes</Link></li>
                         <li><Link to="/" className="text-decoration-none text-white">Shopping</Link></li>
                     </ul>
                     <form className="input-field right">
@@ -53,6 +48,7 @@ const Nav = props =>{
                 </div>
             </nav>
         </div>
+        
 
 
         

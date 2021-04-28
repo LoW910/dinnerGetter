@@ -1,31 +1,31 @@
-import React from 'react'
-import axios from "axios";
-import { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react'
 import { ExternalApi } from "../Api";
+import MyContext from "../MyContext";
+import axios from "axios";
+import {navigate} from "@reach/router";
+
 const apiKey = process.env.API_KEY;
 function Recipes() {
-  const [ allRecipes, setAllRecipes ] = useState([]);
-  const [ hasBeenPopulated, setHasBeenPopulated ] = useState(false);
-
-  useEffect(() => {
-    // query db for user's ingredients and set them to a variable
-    // use that variable in the api call below
-
-    // axios.get('https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients',
-    // {params: {
-    //     ingredients: ***{ userIngredients }***,
-    //     number: '10',
-    //     ignorePantry: 'true',
-    //     ranking: '1'},
-    // headers: {
-    //     'x-rapidapi-key': apiKey,
-    //     'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-    // }}).then( res => {
-    //   console.log(res);
-    //   setAllRecipes(res.data);
-    //   setHasBeenPopulated(true);
-    // }).catch(err => console.log(err));
-  }, []);
+  const { allRecipes, setAllRecipes, hasBeenPopulated, setHasBeenPopulated, userIngredientList} = useContext(MyContext);
+  
+  // useEffect(() => {
+  //   if(userIngredientList.length > 2){
+  //     axios.get('https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients',
+  //     {params: {
+  //         ingredients: `${userIngredientList}`,
+  //         number: '10',
+  //         ignorePantry: 'true',
+  //         ranking: '1'},
+  //     headers: {
+  //         'x-rapidapi-key': "fee6666f90msh1746015aef307d1p1f3a8ejsn6c2902c996f6",
+  //         'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+  //     }}).then( res => {
+  //       console.log(res);
+  //       setAllRecipes(res.data);
+  //       setHasBeenPopulated(true);
+  //     }).catch(err => console.log(err));
+  //   }
+  // }, [userIngredientList]);
 
     return (
         <div className="row">
@@ -50,6 +50,7 @@ function Recipes() {
               </table>
             </div>
         </div>
+        <button className="btn waves-effect waves-effect-light pink accent-2 center" onClick={() => navigate("/dashboard")}>Add your own recipe</button>
       </div>
             
     )

@@ -9,11 +9,7 @@ function OnHand(props) {
   const {pantry, ingredient} = useContext(MyContext);
 
   // const [ingredientName, setIngredientName] = useState("");
-
-  
-
-
-
+  console.log(`this is from OnHand:${pantry}`);
     return (
         <div className="row">
           <div className="col s10 offset-s1">
@@ -56,6 +52,8 @@ function OnHand(props) {
               </div>
             </div>
         </div>
+        <button className="btn green lighten-3 black-text" onClick={() => console.log(pantry)}>Log Pantry</button>
+        
       </div>
     )
 }
