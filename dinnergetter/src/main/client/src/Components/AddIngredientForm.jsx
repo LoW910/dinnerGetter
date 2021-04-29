@@ -3,7 +3,7 @@ import MyContext from "../MyContext";
 // import axios from 'axios'
 
 export default function AddIngredientForm(props) {
-    const {curUser, ingredient} = useContext(MyContext);
+    const { ingredient} = useContext(MyContext);
 
     const {handleChange, handleSubmit} = props;
 

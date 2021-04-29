@@ -4,8 +4,8 @@ import axios from 'axios';
 import React, { useContext } from "react";
 import MyContext from "../MyContext";
 
-const LandingPad = (props) => {
-    const { curUser, setUser, setPantry, setUserIngredientList, userIngredientList, redirectLocation} = useContext(MyContext);
+const LandingPad = () => {
+    const { curUser, setUser, setPantry, setUserIngredientList, redirectLocation} = useContext(MyContext);
     const { user, isAuthenticated } = useAuth0();
     
     if (isAuthenticated) {

@@ -2,8 +2,11 @@ import React, {useContext} from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import MyContext from "../MyContext";
 import M from "materialize-css";
+import SaveRecipeBtn from "./SaveRecipeBtn";
 
 function RecipesAdded() {
+  // what does this do
+  // this initialized the materializ jqery nonsense built into it
 
   M.AutoInit();
 
@@ -30,10 +33,11 @@ function RecipesAdded() {
                 
                   <li key={idx}>
                     <div className="collapsible-header blue-grey darken-1">
+                      {/* <p style="white-space: pre-wrap">{r.name}</p> */}
                       {r.name}
                     </div>
                     <div className="collapsible-body white">
-                      <span className="blue-grey-text text-darken-1 white">{r.id}: {r.steps}</span>
+                      <span className="blue-grey-text text-darken-1 white">{r.id}: {r.steps}<SaveRecipeBtn /> </span>
                     </div>
                   </li>
                 

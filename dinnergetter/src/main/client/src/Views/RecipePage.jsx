@@ -6,14 +6,18 @@ import RecipesAdded from "../Components/RecipesAdded";
 import RecipesSaved from "../Components/RecipesSaved";
 import MyContext from "../MyContext";
 import axios from "axios";
+import M from "materialize-css";
 
 const RecipePage = props =>{
-
-    const {curUser, setUser, setRedirectLocation, addedRecipes, setAddedRecipes} = useContext(MyContext);
+    
+    const {curUser, setUser, setRedirectLocation, redirectLocation, addedRecipes, setAddedRecipes} = useContext(MyContext);
     
     useEffect( ()=>{
+        M.AutoInit();
         if(curUser.email === ""){
-            setRedirectLocation("/recipes");
+            // while(redirectLocation !== "/recipes") {
+                setRedirectLocation("/recipes");
+            // }
             navigate("/");
         }
         if(!curUser.addedRecipes){
@@ -42,10 +46,10 @@ const RecipePage = props =>{
 
     return(
         <div className="row">
-            <div className="col s6">
+            <div className="col m6 s12">
                 <RecipesSaved />
             </div>
-            <div className="col s6">
+            <div className="col m6 s12">
                 <NewRecipeForm />
                 <RecipesAdded />
                 <button className="btn purple accent-3 center" onClick={() => console.log(addedRecipes)}>Log Recipes</button>

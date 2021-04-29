@@ -1,10 +1,36 @@
 import { navigate } from "@reach/router";
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MyContext from "../MyContext";
+import M from "materialize-css";
+import axios from "axios";
 
 const apiKey = process.env.API_KEY;
 function Recipes() {
-  const { allRecipes, setAllRecipes, hasBeenPopulated, setHasBeenPopulated, userIngredientList} = useContext(MyContext);
+
+  const [ instructions, setInstructions] = useState([]);
+  const RECIPES = require("../static/recipelist");
+  const { allRecipes, hasBeenPopulated, setIngredient, ingredient, curUser, shoppingList, setShoppingList, setUser} = useContext(MyContext);
+  useEffect( () => {
+    M.AutoInit();
+  }, []);
+
+  const addIngredientToList = (e, name) => {
+    console.log(name);
+    let i = {name};
+    i.dummyUserEmail = curUser.email;
+    console.log(i);
+    
+    axios.post('http://localhost:8080/api/ingredients/addtoshoppinglist', i)
+    .then(response => {
+        console.log(response);
+        if(response.data){
+            setShoppingList([...shoppingList, i]);
+            setUser({...curUser, shoppingList});
+        }
+    }).catch( err => console.log(err));
+
+
+  }
   
   // useEffect(() => {
   //   if(userIngredientList.length > 2){
@@ -25,33 +51,70 @@ function Recipes() {
   //   }
   // }, [userIngredientList]);
 
-    return (
+  const clickHandler = (id) =>{
+    // axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=`)
+    //   .then(res => {
+    //     console.log(res);
+    //     setInstructions(res.data.analyzedInstructions);
+    //   })
+    //   .catch(err => console.log(err));
+    console.log("gotcha! Nothing happened!");
+  }
+      return (
         <div className="row">
           <div className="col s10 offset-s1 card blue-grey darken-1">
             <div className="card-content white-text">
-              <span className="card-title">Top Matches</span>
-              <table className="highlight">
-                <thead>
-                  <tr className="grey darken-1">
-                    <th>Recipe</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  { hasBeenPopulated ? allRecipes.map((r,i)=>{
-                    return(
-                      <tr key={i}>
-                        <td>{r.title}</td>
-                      </tr>
-                    );
-                  }) : <tr></tr> }
-                </tbody>
-              </table>
+              <p className="card-title">Top Matches</p>
+              <button className="btn orange" onClick={() => console.log(instructions[0].steps)}>Log instructions</button>
+                <ul className="collapsible"> 
+                  {/* { hasBeenPopulated ? allRecipes.map((r,i)=>{ */}
+                  {RECIPES.map( (r, i) => 
+                      <li key={i}>
+                        <div className="collapsible-header blue-grey darken-1" onClick={()=>{clickHandler(r.id)}}>
+                          {r.title}
+                        </div>
+                        <div className="collapsible-body white">
+                          <ul className="blue-grey-text text-darken-1 white collection">
+                            <li className="collection-item">DESCRIPTION OF RECIPE:
+                            <ul>
+                            {
+                              instructions[0]? 
+                              instructions[0].steps.map((s, idx)=>
+                              <li key={idx}>{s.step}</li>
+                              )
+                              :
+                              <></>
+                            }
+                            </ul>
+                            </li>
+                            <li className="collection-item">MISSING INGREDIENTS:</li>
+                            {r.missedIngredients.map( (ing, idx) =>
+                              <li key={idx} className="collection-item row">
+                                <div className="col s10">{ing.name}</div>
+                                <div className="col s2">
+                                  {idx % 2 === 0?
+                                    <button className="btn waves-effect waves-light blue accent-2" onClick={e => addIngredientToList(e, ing.name)}>
+                                      <i className="material-icons">add_circle_outline</i>
+                                    </button>
+                                    :
+                                    <button className="btn waves-effect waves-dark red accent-2">
+                                      <i className="material-icons">remove_circle_outline</i>
+                                    </button>
+                                  }
+                                </div>
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      </li>
+                  )}
+                </ul>
             </div>
+          </div>
+          <button className="btn waves-effect waves-effect-light pink accent-2 center" onClick={() => navigate("/recipes")}>Add your own recipe</button>
         </div>
-        <button className="btn waves-effect waves-effect-light pink accent-2 center" onClick={() => navigate("/recipes")}>Add your own recipe</button>
-      </div>
             
-    )
+      )
 }
 
 export default Recipes

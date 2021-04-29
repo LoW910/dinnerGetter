@@ -1,8 +1,15 @@
 import { Link } from "@reach/router";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import MyContext from "../MyContext";
+import M from "materialize-css";
+
 const Nav = props =>{
+
+    useEffect( () => {
+        M.AutoInit();
+    }, []);
+    
     const { recipe, setRecipe, searchResults, setSearchResults } = useContext(MyContext);
 
     const searchHandler = (e) =>{
@@ -10,23 +17,24 @@ const Nav = props =>{
         // axios get request to the backend api to return the saved recipes matching the current string in the search bar
         axios.post("http://localhost:8080/api/recipes/search/name", recipe )
             .then( res => {
-                console.log(res);
+                // console.log(res);
                 setSearchResults(res.data);
             }).catch( err => console.log(`Not yo day mf ${err}`));
     }
-    console.log(searchResults);
+    // console.log(searchResults);
 
     return( 
         <div className="navbar-fixed">
             <nav>
                 <div className = "nav-wrapper grey darken-3">
                     <span className="brand-logo center">Dinner Picker</span>
-                    <ul className="left">
+                    <a data-target="mob-menu" className="sidenav-trigger" ><i className="material-icons">menu</i></a>
+                    <ul className="left hide-on-med-and-down">
                         <li><Link to="/dashboard" className="text-decoration-none  text-white">Home</Link></li>
                         <li><Link to="/recipes" className="text-decoration-none text-white">My Recipes</Link></li>
-                        <li><Link to="/" className="text-decoration-none text-white">Shopping</Link></li>
+                        <li><Link to="/shopping" className="text-decoration-none text-white">Shopping</Link></li>
                     </ul>
-                    <form className="input-field right">
+                    <form className="input-field right hide-on-med-and-down">
                         <input
                             id="search"
                             type="search"

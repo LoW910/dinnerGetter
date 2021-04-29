@@ -4,9 +4,9 @@ import MyContext from "../MyContext";
 // import axios from 'axios'
 
 export default function NewRecipeForm( props ) {
-    const {curUser, ingredient, addedRecipes, setAddedRecipes} = useContext(MyContext);
+    const {curUser, addedRecipes, setAddedRecipes} = useContext(MyContext);
 
-    const [ingredientInput, setIngredientInput] = useState([""]);
+    // const [ingredientInput, setIngredientInput] = useState([""]);
     const [recipeInputs, setRecipeInputs] = useState({
         name: "",
         steps: "",

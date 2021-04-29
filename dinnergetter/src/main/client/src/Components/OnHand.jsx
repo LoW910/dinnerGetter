@@ -24,7 +24,6 @@ function OnHand(props) {
                       <AddIngredientForm
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}
-                        
                       />
                     </td></tr>
                     {pantry?

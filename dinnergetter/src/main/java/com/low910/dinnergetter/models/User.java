@@ -218,4 +218,12 @@ public class User {
         this.pantry = pantry;
     }
 
+    public List<Ingredient> getShoppingList() {
+        return this.shoppingList;
+    }
+
+    public void setShoppingList(List<Ingredient> shoppingList) {
+        this.shoppingList = shoppingList;
+    }
+
 }

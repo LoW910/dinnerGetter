@@ -1,26 +1,26 @@
-import LoginButton from "./Components/LoginButton";
-import LandingPad from "./Components/LandingPad";
-import NewRecipeForm from "./Components/NewRecipeForm";
-import { Router, Redirect} from "@reach/router";
 import { useAuth0 } from '@auth0/auth0-react';
-import MyContext from './MyContext';
+import { Router } from "@reach/router";
+import M from 'materialize-css';
+import 'materialize-css/dist/css/materialize.min.css';
+import { useState } from 'react';
+import './App.css';
+import LandingPad from "./Components/LandingPad";
+import LoginButton from "./Components/LoginButton";
+import MobileNav from './Components/MobileNav';
 import Nav from "./Components/Nav";
-import { useState, useEffect } from 'react';
-import Main from "./Views/Main";
+import MyContext from './MyContext';
 import Home from "./Views/Home";
 import RecipePage from "./Views/RecipePage";
-import './App.css';
-import axios from "axios";
-import $ from "jquery";
-import ReactDOM from 'react-dom';
-import 'materialize-css/dist/css/materialize.min.css';
+import ShoppingPage from "./Views/ShoppingPage";
 
 function App() {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  M.AutoInit();
+
+  const {  isAuthenticated } = useAuth0();
 
   const [ recipe, setRecipe ] = useState({ name: ""});
 
-  const [userEmail, setUserEmail] = useState(user?.email);
+  // const [userEmail, setUserEmail] = useState(user?.email);
 
   const [ curUser, setUser ] = useState({
     firstName: "",
@@ -34,6 +34,7 @@ function App() {
 
   const [ recipes, setRecipes ] = useState([]);
   const [ pantry, setPantry] = useState(false);
+  const [ shoppingList, setShoppingList] = useState(false);
   const [ addedRecipes, setAddedRecipes] = useState(false);
   const [ ingredient, setIngredient] = useState({name: ""});
   const [ allRecipes, setAllRecipes ] = useState([]);
@@ -43,9 +44,10 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
 
   return (
-    <div className="App grey lighten-1">
-      <MyContext.Provider value = {{ recipe, setRecipe, curUser, setUser, pantry, setPantry, addedRecipes, setAddedRecipes, recipes, setRecipes, ingredient, setIngredient,allRecipes, setAllRecipes,hasBeenPopulated, setHasBeenPopulated,userIngredientList, setUserIngredientList, redirectLocation, setRedirectLocation, searchResults, setSearchResults }}>
+    <div className="grey lighten-3">
+      <MyContext.Provider value = {{ recipe, setRecipe, curUser, setUser, pantry, setPantry, shoppingList, setShoppingList, addedRecipes, setAddedRecipes, recipes, setRecipes, ingredient, setIngredient,allRecipes, setAllRecipes,hasBeenPopulated, setHasBeenPopulated,userIngredientList, setUserIngredientList, redirectLocation, setRedirectLocation, searchResults, setSearchResults }}>
         <Nav />
+        <MobileNav />
         {isAuthenticated? 
           <Router>
             {/* some router react/reach */}
@@ -53,6 +55,7 @@ function App() {
             <Home path="/dashboard" />
             {/* <NewRecipeForm path="/recipes/new" /> */}
             <RecipePage path="/recipes" />
+            <ShoppingPage path="/shopping" />
           </Router>
           :
           // <div className="container ">

@@ -112,6 +112,15 @@ public class AppService {
         this.uRepo.save(u);
     }
 
+    public boolean addIngredientToShoppingList(User u, Ingredient i){
+        if(!u.getShoppingList().contains(i)){
+            u.getShoppingList().add(i);
+            this.uRepo.save(u);
+            return true;
+        }
+        return false;
+    }
+
     public void addAuthorToRecipe(String email, Long rId){
         User u = this.findUserByEmail(email);
         Recipe r = this.findRecipeById(rId);
@@ -119,7 +128,12 @@ public class AppService {
         this.rRepo.save(r);
     }
 
-
+    public void mySavedRecipe(String email, Long rId){
+        User u = this.findUserByEmail(email);
+        Recipe r = this.findRecipeById(rId);
+        u.getSavedRecipes().add(r);
+        this.uRepo.save(u);
+    }
 
 
 }

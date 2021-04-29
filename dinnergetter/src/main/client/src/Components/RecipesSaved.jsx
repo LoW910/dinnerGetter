@@ -24,7 +24,7 @@ function RecipesSaved() {
                         <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
                     </li>
                     <li>
-                        <div className="collapsible-header"><i className="material-icons">place</i>Second</div>
+                        <div className="collapsible-header"><i className="material-icons">smoking_rooms</i>Second</div>
                         <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
                     </li>
                     <li>
@@ -41,8 +41,8 @@ function RecipesSaved() {
                         <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
                     </li>
                     <li>
-                        <div className="collapsible-header"><i className="material-icons">sentiment_neutral</i>Sixth</div>
-                        <div className="collapsible-body"><span className="white-text">MOTHERF*******</span></div>
+                        <div className=""><i className="material-icons">sentiment_neutral</i>Sixth</div>
+                        <div className=""><span className="white-text">MOTHERF*******</span></div>
                     </li>
                 </ul>
 

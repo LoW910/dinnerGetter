@@ -9,6 +9,7 @@ import Profile from "../Components/Profile";
 import Recipes from "../Components/Recipes";
 import ShoppingList from "../Components/ShoppingList";
 import MyContext from "../MyContext";
+import M from "materialize-css";
 
 
 const Home = props =>{
@@ -17,6 +18,7 @@ const Home = props =>{
     const {curUser,pantry,setPantry,ingredient, setIngredient, setRedirectLocation, setUserIngredientList, userIngredientList, searchResults, setUser} = useContext(MyContext);
 
     useEffect( ()=>{
+        M.AutoInit();
         if(curUser.email == ""){
             setRedirectLocation("/dashboard");
             navigate("/");
@@ -45,9 +47,6 @@ const Home = props =>{
         }
         setPantry(curUser?.pantry);
     },[]);
-
-
-
     
     //==================================================================================
     //  Handling the ingredients on hand
@@ -86,7 +85,7 @@ const Home = props =>{
                 supposed to display the search results but doesn't do a super great job at it, needs work
                 ideally, it would overlap other components but idk how to do that with materialize yet
                 */ }
-                <div className="row">
+                {/* <div className="row">
                     {searchResults?.length > 0 ? 
                         <div className="col s4 offset-s8 grey darken-3" style={{ minHeight:" 0px"}}>
                             <ul>
@@ -98,7 +97,7 @@ const Home = props =>{
                     : null
                     }
                     {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}               
-                </div>
+                {/* </div> */} 
                 <div className="col m6 s12 row">
                     <Recipes />
                 </div>
@@ -113,9 +112,9 @@ const Home = props =>{
                 </div>
             </div>
             <div className="row">
-                <div className="col m6 offset-m3 s12 row">
+                {/* <div className="col m6 offset-m3 s12 row">
                     <ShoppingList />
-                </div>
+                </div> */}
                 <LoginButton />
                 <LogoutButton />
                 <Profile />

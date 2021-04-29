@@ -1,15 +1,12 @@
 package com.low910.dinnergetter.controllers;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.ArrayList;
 
 import com.low910.dinnergetter.models.Ingredient;
 import com.low910.dinnergetter.models.Recipe;
 import com.low910.dinnergetter.models.User;
 import com.low910.dinnergetter.services.AppService;
 
-import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,19 +88,7 @@ public class DinnerAPI {
         return this.serv.findIngredientById(iId);
     }
 
-    @PostMapping("ingredients/addtopantry")
-    public boolean addIngredientToPantry(@RequestBody Ingredient ingredient){
-        Ingredient i = this.serv.createIngredient(ingredient);
-        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
-        return this.serv.addIngredientToPantry(u, i);
-    }
-
-    @PostMapping("ingredients/removefrompantry")
-    public void removeIngredientFromPantry(@RequestBody Ingredient ingredient){
-        Ingredient i = this.serv.findIngredientByName(ingredient.getName());
-        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
-        this.serv.removeIngredientFromPantry(u, i);
-    }
+    
 
 
     //======================================================================
@@ -122,7 +107,7 @@ public class DinnerAPI {
 
     @PostMapping("users/checkdb")  //god damn! POS(&!^*@^!@&^&)  change to user instead of string
     public User checkIfUserExistsAlready(@RequestBody User user){
-        System.out.println("%%%%%%%%%% email: "+ user.getEmail());
+        System.out.println("%%%%%%%%%% email: "+ user.getEmail() + "inside users/checkdb");
         User u = this.serv.findUserByEmail(user.getEmail());
         if(u != null){
             return u;
@@ -160,9 +145,40 @@ public class DinnerAPI {
             Ingredient iFromDB = this.serv.createIngredient(i);
             this.serv.addIngredientToRecipe(rId, iFromDB.getId());
         }
-
-        
         return this.serv.findRecipeById(rId);
     }
+
+    @PostMapping("recipes/{rId}/save")
+    public Recipe saveARecipe(@PathVariable("rId")Long rId, String uEmail){
+        this.serv.mySavedRecipe(uEmail, rId);
+        return this.serv.findRecipeById(rId);
+    }
+
+    @PostMapping("ingredients/addtopantry")
+    public boolean addIngredientToPantry(@RequestBody Ingredient ingredient){
+        Ingredient i = this.serv.createIngredient(ingredient);
+        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+        return this.serv.addIngredientToPantry(u, i);
+    }
+
+    @PostMapping("ingredients/removefrompantry")
+    public void removeIngredientFromPantry(@RequestBody Ingredient ingredient){
+        Ingredient i = this.serv.findIngredientByName(ingredient.getName());
+        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+        this.serv.removeIngredientFromPantry(u, i);
+    }
+
+    @PostMapping("ingredients/addtoshoppinglist")
+    public boolean addIngredientToShoppingList(@RequestBody Ingredient ingredient){
+        Ingredient i = this.serv.createIngredient(ingredient);
+        User u = this.serv.findUserByEmail(ingredient.getDummyUserEmail());
+        return this.serv.addIngredientToShoppingList(u, i);
+    }
+
+
+
+
+
+
 
 }
