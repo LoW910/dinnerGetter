@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react';
 import MyContext from "../MyContext";
-import { navigate } from '@reach/router'
 // import axios from 'axios'
 
 export default function AddIngredientForm(props) {

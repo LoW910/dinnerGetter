@@ -1,15 +1,12 @@
-import React, {useState, useContext} from 'react';
-import AddIngredientForm from './AddIngredientForm';
+import React, { useContext } from 'react';
 import MyContext from "../MyContext";
+import AddIngredientForm from './AddIngredientForm';
 
 
 
 function OnHand(props) {
   const {handleChange, handleSubmit, removeFromPantry} = props;
   const {pantry, ingredient} = useContext(MyContext);
-
-  // const [ingredientName, setIngredientName] = useState("");
-  console.log(`this is from OnHand:${pantry}`);
     return (
         <div className="row">
           <div className="col s10 offset-s1">
@@ -39,7 +36,7 @@ function OnHand(props) {
                             className="btn red darken-3 right"
                             onClick={(e) => removeFromPantry(e, ingredient)}
                           >
-                            <i className="material-icons">delete</i>
+                            <i className="material-icons blue">delete</i>
                           </button>
                         </td>
                       </tr>

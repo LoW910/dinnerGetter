@@ -1,20 +1,23 @@
 package com.low910.dinnergetter.controllers;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.low910.dinnergetter.models.Ingredient;
 import com.low910.dinnergetter.models.Recipe;
 import com.low910.dinnergetter.models.User;
 import com.low910.dinnergetter.services.AppService;
 
-import org.springframework.web.bind.annotation.RequestBody;
+import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/")
@@ -36,12 +39,24 @@ public class DinnerAPI {
         return this.serv.findAllRecipes();
     }
 
+    // @PostMapping("recipes/create")
+    // public Recipe createRecipe(@RequestParam("name") String name, @RequestParam("steps") String steps){
+    //     Recipe r = new Recipe();
+    //     r.setName(name);
+    //     r.setSteps(steps);
+    //     return this.serv.createRecipe(r);
+    // }
+
     @PostMapping("recipes/create")
-    public Recipe createRecipe(@RequestParam("name") String name, @RequestParam("steps") String steps){
-        Recipe r = new Recipe();
-        r.setName(name);
-        r.setSteps(steps);
-        return this.serv.createRecipe(r);
+    public Recipe createRecipe(@RequestBody Recipe recipe){
+        System.out.println("=================================================================================================");
+        
+        System.out.println(recipe.getName());
+        System.out.println(recipe.getSteps());
+
+        System.out.println("=================================================================================================");
+
+        return this.serv.createRecipe(recipe);
     }
 
     @PostMapping("recipes/search/name")
@@ -100,6 +115,11 @@ public class DinnerAPI {
         return serv.findAllUsers();
     }
 
+    @GetMapping("users/{id}")
+    public User findUserById(@PathVariable("id") Long id){
+        return serv.findUserById(id);
+    }
+
     @PostMapping("users/checkdb")  //god damn! POS(&!^*@^!@&^&)  change to user instead of string
     public User checkIfUserExistsAlready(@RequestBody User user){
         System.out.println("%%%%%%%%%% email: "+ user.getEmail());
@@ -126,6 +146,23 @@ public class DinnerAPI {
     @PostMapping("/recipes/{rId}/ingredients/{iId}/add")
     public Recipe addIngredientToRecipe(@PathVariable("rId") Long rId, @PathVariable("iId") Long iId){
         return this.serv.addIngredientToRecipe(rId, iId);
+    }
+
+    @PostMapping("recipes/{rId}/completerelationships")
+    public Recipe addIngredientArrayToRecipe(@PathVariable("rId") Long rId, @RequestBody String[] ingredientNames){
+        // ******** the first item in ingredientNames is actually the user email ********
+        this.serv.addAuthorToRecipe(ingredientNames[0], rId);
+            
+        for(int j=1; j<ingredientNames.length; j++){
+            Ingredient i = new Ingredient();
+            i.setName(ingredientNames[j]);
+            System.out.println("in the for loop");
+            Ingredient iFromDB = this.serv.createIngredient(i);
+            this.serv.addIngredientToRecipe(rId, iFromDB.getId());
+        }
+
+        
+        return this.serv.findRecipeById(rId);
     }
 
 }

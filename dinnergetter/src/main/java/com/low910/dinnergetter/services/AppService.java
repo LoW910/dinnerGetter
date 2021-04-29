@@ -46,6 +46,7 @@ public class AppService {
 	//======================================================================
     
     public Ingredient createIngredient(Ingredient ingredient){
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>> inside create ingredient <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         Ingredient i = (Ingredient) this.findIngredientByName(ingredient.getName());
         if(i != null){
             return i;
@@ -74,10 +75,12 @@ public class AppService {
     public User findUserByEmail(String email){
         return (User) this.uRepo.findUserByEmail(email).orElse(null);
     }
+    public User findUserById(Long id){
+        return this.uRepo.findById(id).orElse(null);
+    }
     public User createUser(User u){
         return this.uRepo.save(u);
     }
-    
 
 
 
@@ -107,6 +110,13 @@ public class AppService {
         System.out.println("************************************************************************************************************************************************************************");
         u.getPantry().remove(i);
         this.uRepo.save(u);
+    }
+
+    public void addAuthorToRecipe(String email, Long rId){
+        User u = this.findUserByEmail(email);
+        Recipe r = this.findRecipeById(rId);
+        r.setAuthor(u);
+        this.rRepo.save(r);
     }
 
 

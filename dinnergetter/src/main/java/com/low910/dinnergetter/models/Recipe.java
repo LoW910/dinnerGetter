@@ -74,8 +74,9 @@ public class Recipe {
         inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private List<Ingredient> ingredients;
-    
 
+    // @Transient
+    // private String[] dummyIngredientList;
 
     @PrePersist
     protected void onCreate(){

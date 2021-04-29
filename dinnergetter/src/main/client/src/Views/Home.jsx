@@ -1,41 +1,52 @@
+import { useAuth0 } from '@auth0/auth0-react';
+import { navigate } from "@reach/router";
+import axios from 'axios';
+import { useContext, useEffect } from "react";
 import LoginButton from "../Components/LoginButton";
 import LogoutButton from "../Components/LogoutButton";
 import OnHand from "../Components/OnHand";
 import Profile from "../Components/Profile";
 import Recipes from "../Components/Recipes";
 import ShoppingList from "../Components/ShoppingList";
-import { useAuth0 } from '@auth0/auth0-react'
-import {useState, useEffect, useContext} from "react";
 import MyContext from "../MyContext";
-import axios from 'axios'
-import { navigate } from "@reach/router";
 
 
 const Home = props =>{
 
     const { user, isAuthenticated, isLoading } = useAuth0();
-    const {curUser,pantry,setPantry,ingredient, setIngredient, setRedirectLocation, setUserIngredientList, userIngredientList} = useContext(MyContext);
+    const {curUser,pantry,setPantry,ingredient, setIngredient, setRedirectLocation, setUserIngredientList, userIngredientList, searchResults, setUser} = useContext(MyContext);
 
     useEffect( ()=>{
         if(curUser.email == ""){
             setRedirectLocation("/dashboard");
             navigate("/");
         } 
+
+        if(!curUser.pantry){
+            setPantry([]);
+            return;
+        }
+
+        // because of the way the relational database creates JSON objects, sometimes instead of getting an actual recipe we just get a recipe ID.  Which is not ideal for, you know, showing your recipe on the page
+        let ingredients = curUser.pantry;
+        for(let i=0; i<ingredients.length; i++){
+            if(typeof ingredients[i] === "number"){
+                console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
+                axios.get(`http://localhost:8080/api/ingredients/${ingredients[i]}`)
+                    .then(res => {
+                        ingredients.splice(i, 1, res.data);
+                        setUser({...curUser,
+                            pantry: ingredients
+                        });
+                        setPantry(ingredients);
+
+                    }).catch(err => console.log(err));
+            }
+        }
         setPantry(curUser?.pantry);
     },[]);
 
-    useEffect( () => {
-        console.log("Ran the useEffect on \"Home.jsx\"");
-        console.log("old list was", userIngredientList);
-        console.log(pantry);
-        let templist = "";
-            for(let i = 0; i < pantry.length; i ++){
-                templist += pantry[i].name.toLowerCase() + ","
-            }
-            setUserIngredientList(templist.substring(0, templist.length - 1));
-            console.log(userIngredientList);
-            console.log("the templist thing says", templist.substring(0, templist.length - 1));
-    }, [pantry]);
+
 
     
     //==================================================================================
@@ -70,8 +81,24 @@ const Home = props =>{
     //==================================================================================
     return(
         <>
-
             <div className="row">
+                {/* 
+                supposed to display the search results but doesn't do a super great job at it, needs work
+                ideally, it would overlap other components but idk how to do that with materialize yet
+                */ }
+                <div className="row">
+                    {searchResults?.length > 0 ? 
+                        <div className="col s4 offset-s8 grey darken-3" style={{ minHeight:" 0px"}}>
+                            <ul>
+                                {searchResults?.map((r,idx )=>
+                                    <p key={idx}><li>{r.name}</li></p>
+                                )}
+                            </ul>
+                        </div>
+                    : null
+                    }
+                    {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}               
+                </div>
                 <div className="col m6 s12 row">
                     <Recipes />
                 </div>

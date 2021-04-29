@@ -1,11 +1,11 @@
-import React, {useEffect, useContext} from "react";
-import MyContext from "../MyContext";
+import { useAuth0 } from '@auth0/auth0-react';
 import { navigate } from "@reach/router";
-import axios from 'axios'
-import { useAuth0 } from '@auth0/auth0-react'
+import axios from 'axios';
+import React, { useContext } from "react";
+import MyContext from "../MyContext";
 
 const LandingPad = (props) => {
-    const { curUser, setUser, setUserIngredientList, userIngredientList, redirectLocation} = useContext(MyContext);
+    const { curUser, setUser, setPantry, setUserIngredientList, userIngredientList, redirectLocation} = useContext(MyContext);
     const { user, isAuthenticated } = useAuth0();
     
     if (isAuthenticated) {
@@ -37,11 +37,25 @@ const LandingPad = (props) => {
                 return res;
             })
             .then((res) =>{
-                console.log(curUser.pantry);
+
+                let tempPantry = [...curUser.pantry];
+                
                 let templist = "";
-                for(let i = 0; i < curUser.pantry.length; i ++){
-                    // setUserIngredientList(userIngredientList = userIngredientList + "," + curUser.pantry[i].name);
-                    templist += curUser.pantry[i].name.toLowerCase() + ","
+                for(let i = 0; i < tempPantry.length; i ++){
+                    if(typeof tempPantry[i] === "number"){
+                        // console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
+                        axios.get(`http://localhost:8080/api/ingredients/${tempPantry[i]}`)
+                            .then(res => {
+                                tempPantry.splice(i, 1, res.data);
+                                setUser({...curUser,
+                                    pantry: tempPantry
+                                });
+                                setPantry(tempPantry);
+                                templist += res.data.name.toLowerCase() + ",";
+                            }).catch(err => console.log(err));
+                    } else {
+                        templist += curUser.pantry[i].name.toLowerCase() + ",";
+                    }
                 }
                 setUserIngredientList(templist.substring(0, templist.length - 1));
                 console.log(templist.substring(0, templist.length - 1));
@@ -54,7 +68,7 @@ const LandingPad = (props) => {
 
     return (
         isAuthenticated && (
-            <div className="container">
+            <div className="container card-panel grey lighten-1">
                 <div className="card">
                     <div className="card-content">
                         <div className="preloader-wrapper big active">

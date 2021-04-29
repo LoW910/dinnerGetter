@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react'
-import { ExternalApi } from "../Api";
+import { navigate } from "@reach/router";
+import React, { useContext } from 'react';
 import MyContext from "../MyContext";
-import axios from "axios";
-import {navigate} from "@reach/router";
 
 const apiKey = process.env.API_KEY;
 function Recipes() {
@@ -17,7 +15,7 @@ function Recipes() {
   //         ignorePantry: 'true',
   //         ranking: '1'},
   //     headers: {
-  //         'x-rapidapi-key': "fee6666f90msh1746015aef307d1p1f3a8ejsn6c2902c996f6",
+  //         'x-rapidapi-key': "ha! you're too late!  You'll never find it now!",
   //         'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
   //     }}).then( res => {
   //       console.log(res);
@@ -50,7 +48,7 @@ function Recipes() {
               </table>
             </div>
         </div>
-        <button className="btn waves-effect waves-effect-light pink accent-2 center" onClick={() => navigate("/dashboard")}>Add your own recipe</button>
+        <button className="btn waves-effect waves-effect-light pink accent-2 center" onClick={() => navigate("/recipes")}>Add your own recipe</button>
       </div>
             
     )
