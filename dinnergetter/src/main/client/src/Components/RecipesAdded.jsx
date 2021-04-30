@@ -33,7 +33,7 @@ function RecipesAdded() {
                 
                   <li key={idx}>
                     <div className="collapsible-header blue-grey darken-1">
-                      {/* <p style={{whiteSpace: preWrap}}>{r.name}</p> */}
+                      {/* <p style={{whiteSpace: "pre-wrap"}}>{r.name}</p> */}
                       <p>{r.name}</p>
                     </div>
                     <div className="collapsible-body white">

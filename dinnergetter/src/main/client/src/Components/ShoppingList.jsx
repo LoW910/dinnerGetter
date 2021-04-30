@@ -1,17 +1,35 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import 'materialize-css/dist/css/materialize.min.css';
 import React, {useState, useContext} from 'react';
+import GWTH from '../static/img/GWTH.jpg'
 import axios from "axios";
 import MyContext from "../MyContext";
 import AddIngredientForm from "./AddIngredientForm";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
+import ShopListEditMode from "./ShopListEditMode";
 
 
 
-function ShoppingList({handleFormChange, handleFormSubmit, curUser}) {
+function ShoppingList({handleFormChange, handleFormSubmit}) {
   const {user, isAuthenticated, isLoading } = useAuth0();
 
-  // const {curUser} = useContext(MyContext);
+  const {curUser, setUser} = useContext(MyContext);
+
+  const [storeMode, setStoreMode] = useState(false);
+
+  const handleDrop = move => {
+    if(!move.destination) return;
+    let adjList = [...curUser.shoppingList];
+
+    const [movedItem] = adjList.splice(move.source.index, 1);
+    adjList.splice(move.destination.index, 0, movedItem);
+
+    setUser({...curUser, shoppingList:adjList});
+  }
+
+  const switchMode = () => {
+    setStoreMode(!storeMode);
+  }
 
   
 
@@ -30,7 +48,11 @@ function ShoppingList({handleFormChange, handleFormSubmit, curUser}) {
                       <div className="switch">
                         <label className="white-text">
                           EDIT MODE
-                          <input type="checkbox"/>
+                          <input
+                            type="checkbox"
+                            ischecked={storeMode? "true" : "false"}
+                            onChange={switchMode}
+                          />
                           <span className="lever"></span>
                           STORE MODE
                         </label>
@@ -44,19 +66,12 @@ function ShoppingList({handleFormChange, handleFormSubmit, curUser}) {
                     </li>
                   </ul>
 
+                  <ShopListEditMode
+                    handleDrop={handleDrop}
+                    curUser={curUser}
+                    storeMode={storeMode}
+                  />
 
-
-                  <ul className="collection" style={{marginTop: "0px"}}>
-                      {curUser.shoppingList?
-                        curUser.shoppingList.map( (i, idx) =>
-                        <li key={idx} className="collection-item blue-grey-text text-darken-1">
-                          {i.name}
-                        </li> 
-                        )
-                        :
-                        <></>
-                      }
-                  </ul>
 
               </div>
             </div>
@@ -64,23 +79,6 @@ function ShoppingList({handleFormChange, handleFormSubmit, curUser}) {
             <button className="btn black" onClick={() => console.log(curUser.shoppingList)}>Log Current User List</button>
           </div>
     );  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

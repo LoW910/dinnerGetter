@@ -102,7 +102,6 @@ const ShoppingPage = () => {
                 <ShoppingList
                     handleFormSubmit={handleFormSubmit}
                     handleFormChange={handleFormChange}
-                    curUser={curUser}
                 />
 
                 <p>{counter}</p>
