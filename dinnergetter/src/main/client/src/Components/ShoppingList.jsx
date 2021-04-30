@@ -31,7 +31,24 @@ function ShoppingList({handleFormChange, handleFormSubmit}) {
     setStoreMode(!storeMode);
   }
 
-  
+  const toggleItemCrossed = (e, idx) => {
+    if(storeMode){
+      let adjList = [...curUser.shoppingList];
+      e.target.style.cssText = (e.target.style.cssText === ""? "text-decoration: line-through; color: lightgrey;" : "");
+      
+
+      if(!adjList.dummyUserEmail){
+        adjList[idx].dummyUserEmail = true;
+      }
+      if(adjList.dummyUserEmail){
+        adjList[idx].dummyUserEmail = false;
+      }
+      setUser({...curUser, shoppingList:adjList});
+      // console.log(e.target.)
+    }
+  }
+
+  // e.target.style.cssText
 
   if (isLoading) return(<div>Loading...</div>)
     return (
@@ -70,6 +87,7 @@ function ShoppingList({handleFormChange, handleFormSubmit}) {
                     handleDrop={handleDrop}
                     curUser={curUser}
                     storeMode={storeMode}
+                    toggleItemCrossed={toggleItemCrossed}
                   />
 
 

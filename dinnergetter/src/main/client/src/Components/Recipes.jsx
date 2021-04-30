@@ -24,10 +24,11 @@ function Recipes() {
     .then(response => {
       console.log(response.data);
       if(response.data){
-        let newList = [...curUser.shoppingList];
-        newList.push(ingredient);
-        setUser({...curUser, shoppingList:newList});
-        console.log(curUser.shoppingList);
+        console.log("got through that particular 'if' statement");
+        let adjList = [...curUser.shoppingList];
+        adjList.push(i);
+        setUser({...curUser, shoppingList:adjList});
+        console.log(adjList);
       }
     }).catch( err => console.log(err));
   }
@@ -39,6 +40,9 @@ function Recipes() {
     axios.post('http://localhost:8080/api/ingredients/removefromshoppinglist', i)
       .then( response => {
         console.log(response.data);
+        let adjList = [...curUser.shoppingList];
+        adjList.splice(response.data, 1);
+        setUser({...curUser, shoppingList: adjList});
       }
       )
       .catch(err => console.log(err));

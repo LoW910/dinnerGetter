@@ -17,6 +17,6 @@ uri="http://www.springframework.org/tags/form"%>
     <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <h1>HELLO WORLD</h1>
+    <h1><a href="http://www.grubhub.com">Click here for project</a></h1>
   </body>
 </html>
