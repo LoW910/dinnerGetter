@@ -81,7 +81,7 @@ function Recipes() {
           <div className="col s10 offset-s1 card blue-grey darken-1">
             <div className="card-content white-text">
               <p className="card-title">Top Matches</p>
-              <button className="btn orange" onClick={() => console.log(instructions[0].steps)}>Log instructions</button>
+              {/* <button className="btn orange" onClick={() => console.log(instructions[0].steps)}>Log instructions</button> */}
                 <ul className="collapsible"> 
                   {/* { hasBeenPopulated ? allRecipes.map((r,i)=>{ */}
                   {RECIPES.map( (r, i) => 
@@ -90,44 +90,45 @@ function Recipes() {
                           {r.title}
                         </div>
                         <div className="collapsible-body white">
-                          <ul className="blue-grey-text text-darken-1 white collection">
-                            <li className="collection-item">DESCRIPTION OF RECIPE:
+                          <div className="blue-grey-text text-darken-1 white collection">
+                            <a href="#!" className="collection-item">DESCRIPTION OF RECIPE:
                             <ul>
-                            {
-                              instructions[0]? 
-                              instructions[0].steps.map((s, idx)=>
-                              <li key={idx}>{s.step}</li>
-                              )
-                              :
-                              <></>
-                            }
+                              {
+                                instructions[0]? 
+                                  instructions[0].steps.map((s, idx)=>
+                                  <li key={idx}>{s.step}</li>
+                                  )
+                                  :
+                                  <></>
+                              }
                             </ul>
-                            </li>
-                            <li className="collection-item">MISSING INGREDIENTS:</li>
+                            </a>
+                            <a className="collection-item">MISSING INGREDIENTS ({r.missedIngredientCount}):</a>
                             {r.missedIngredients.map( (ing, idx) =>
-                              <li key={idx} className="collection-item row">
-                                <div className="col s10">{ing.name}</div>
+                              <a key={idx} className="collection-item row">
+                                <div className="col s10 left-align">{ing.name}</div>
                                 <div className="col s2">
                                   {!curUser.shoppingList.map(x => x.name).includes(ing.name) ? 
                                     <button className="btn waves-effect waves-light blue accent-2" onClick={e => addIngredientToList(e, ing.name)}>
                                       <i className="material-icons">add_circle_outline</i>
                                     </button>
                                     :
-                                    <button className="btn waves-effect waves-dark red accent-2" onClick={e => removeIngredientFromList(e, ing.name)}>
+                                    <button className="btn waves-effect waves-dark red darken-3" onClick={e => removeIngredientFromList(e, ing.name)}>
                                       <i className="material-icons">remove_circle_outline</i>
                                     </button>
                                   }
                                 </div>
-                              </li>
+                              </a>
                             )}
-                          </ul>
+                          </div>
                         </div>
                       </li>
                   )}
                 </ul>
+                <button className="btn waves-effect waves-effect-light pink accent-2 center" onClick={() => navigate("/recipes")}>Add your own recipe</button>
             </div>
           </div>
-          <button className="btn waves-effect waves-effect-light pink accent-2 center" onClick={() => navigate("/recipes")}>Add your own recipe</button>
+          
         </div>
             
       )

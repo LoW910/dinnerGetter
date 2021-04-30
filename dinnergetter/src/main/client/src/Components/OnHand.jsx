@@ -15,9 +15,9 @@ function OnHand(props) {
                 <span className="card-title">What Ingredients I Have</span>
                 <table className="highlight">
                   <thead>
-                    <tr className="grey darken-1">
+                    {/* <tr className="grey darken-1">
                       <th>Ingredient</th>
-                    </tr>
+                    </tr> */}
                   </thead>
                   <tbody>
                     <tr className="grey lighten-3"><td style={{padding: "0px",}}>
@@ -35,7 +35,7 @@ function OnHand(props) {
                             className="btn red darken-3 right"
                             onClick={(e) => removeFromPantry(e, ingredient)}
                           >
-                            <i className="material-icons blue">delete</i>
+                            <i className="material-icons">delete</i>
                           </button>
                         </td>
                       </tr>
@@ -48,7 +48,7 @@ function OnHand(props) {
               </div>
             </div>
         </div>
-        <button className="btn green lighten-3 black-text" onClick={() => console.log(pantry)}>Log Pantry</button>
+        {/* <button className="btn green lighten-3 black-text" onClick={() => console.log(pantry)}>Log Pantry</button> */}
         
       </div>
     )

@@ -1,4 +1,5 @@
 import { Link, navigate } from "@reach/router";
+import { useAuth0 } from '@auth0/auth0-react';
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import MyContext from "../MyContext";
@@ -11,6 +12,7 @@ const Nav = props =>{
     }, []);
     
     const { recipe, setRecipe, searchResults, setSearchResults, setRedirectLocation } = useContext(MyContext);
+    const { logout, isAuthenticated } = useAuth0();
 
     const searchHandler = (e) =>{
         setRecipe( {name: e.target.value});
@@ -38,8 +40,17 @@ const Nav = props =>{
                     <a data-target="mob-menu" className="sidenav-trigger" ><i className="material-icons">menu</i></a>
                     <ul className="left hide-on-med-and-down">
                         <li><Link to="/dashboard" className="text-decoration-none  text-white" onClick={navigateThroughLandingPad}>Home</Link></li>
+
                         <li><Link to="/recipes" className="text-decoration-none text-white" onClick={navigateThroughLandingPad}>My Recipes</Link></li>
+
                         <li><Link to="/shopping" className="text-decoration-none text-white" onClick={navigateThroughLandingPad}>Shopping</Link></li>
+
+                        {isAuthenticated?
+                            <li><Link to="/dashboard" className="text-decoration-none text-white" onClick={(e) => {e.preventDefault(); logout( { returnTo: window.location.origin }) }}>Log out</Link></li>
+                            :
+                            <></>
+                        }
+
                     </ul>
                     <form className="input-field right hide-on-med-and-down">
                         <input

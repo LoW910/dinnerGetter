@@ -223,8 +223,13 @@ public class DinnerAPI {
         return this.serv.removeIngredientFromShoppingList(u, i);
     }
 
-
-
+    //======================================================================
+    // removes ingredient from shopping list
+    //======================================================================
+    @PostMapping("users/{uEmail}/savelistorder")
+    public void saveListOrder(@PathVariable("uEmail") String uEmail, @RequestBody String[] ingredientNames){
+        this.serv.saveListOrder(uEmail, ingredientNames);
+    }
 
 
 

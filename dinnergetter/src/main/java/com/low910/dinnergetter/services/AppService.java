@@ -1,5 +1,6 @@
 package com.low910.dinnergetter.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.low910.dinnergetter.models.Ingredient;
@@ -208,6 +209,20 @@ public class AppService {
         u.getShoppingList().remove(i);
         this.uRepo.save(u);
         return idx;
+    }
+
+    //==================================================
+    // update the order of user's list in database
+    //==================================================
+    public void saveListOrder(String uEmail, String[] ingredients){
+        User u = this.findUserByEmail(uEmail);
+        List<Ingredient> ordered = new ArrayList<Ingredient>();
+        for(String i : ingredients){
+            Ingredient nextIngredient = this.findIngredientByName(i);
+            ordered.add(nextIngredient);
+        }
+        u.setShoppingList(ordered);
+        this.uRepo.save(u);
     }
 
 

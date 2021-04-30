@@ -61,7 +61,7 @@ const RecipePage = props =>{
                 <RecipesAdded />
                 but it's just on the left for now while we work out saving recipes
                 */}
-                <button className="btn purple accent-3 center" onClick={() => console.log(addedRecipes)}>Log Recipes</button>
+                {/* <button className="btn purple accent-3 center" onClick={() => console.log(addedRecipes)}>Log Recipes</button> */}
             </div>
         </div>
     );

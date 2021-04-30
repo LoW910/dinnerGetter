@@ -12,9 +12,7 @@ import ShopListEditMode from "./ShopListEditMode";
 
 function ShoppingList({handleFormChange, handleFormSubmit}) {
   const {user, isAuthenticated, isLoading } = useAuth0();
-
   const {curUser, setUser} = useContext(MyContext);
-
   const [storeMode, setStoreMode] = useState(false);
 
   const handleDrop = move => {
@@ -48,6 +46,15 @@ function ShoppingList({handleFormChange, handleFormSubmit}) {
     }
   }
 
+  const saveListOrder = () => {
+    let listOrder = [...curUser.shoppingList];
+    let names = listOrder.map(x => x.name);
+    axios.post(`http://localhost:8080/api/users/${curUser.email}/savelistorder`, names)
+      .then(response => {
+        console.log(response);
+      }).catch(err => console.log(err));
+  }
+
   // e.target.style.cssText
 
   if (isLoading) return(<div>Loading...</div>)
@@ -56,9 +63,6 @@ function ShoppingList({handleFormChange, handleFormSubmit}) {
             <div className="col s10 offset-s1 card blue-grey darken-1">
               <div className="card-content white-text">
                 <span className="card-title">Shopping List</span>
-
-
-
                   <ul className="collection" style={{marginBottom: "0px"}}>
                     <li className="collection-item blue-grey darken-1">
                       {/* <span>STORE MODE:</span> */}
@@ -75,12 +79,28 @@ function ShoppingList({handleFormChange, handleFormSubmit}) {
                         </label>
                       </div>
                     </li>
-                    <li className="grey lighten-3">
-                        <AddIngredientForm
-                          handleChange={handleFormChange}
-                          handleSubmit={handleFormSubmit}
-                        />
-                    </li>
+                    {storeMode?
+                      <></>
+                      :
+                      <>
+                        <li className="grey lighten-3">
+                            <AddIngredientForm
+                              handleChange={handleFormChange}
+                              handleSubmit={handleFormSubmit}
+                            />
+                        </li>
+                        <li className="white">
+                          <button
+                            className="btn orange lighten-2 black-text center"
+                            style={{marginTop: "-10px", marginBottom: "5px"}}
+                            onClick={saveListOrder}
+                          >
+                            <i className="material-icons right">save</i>
+                            Save List Order
+                          </button>
+                        </li>
+                      </>
+                    }
                   </ul>
 
                   <ShopListEditMode
@@ -93,8 +113,6 @@ function ShoppingList({handleFormChange, handleFormSubmit}) {
 
               </div>
             </div>
-            {/* <button className="btn black" onClick={() => console.log(shoppingList)}>Log user</button> */}
-            <button className="btn black" onClick={() => console.log(curUser.shoppingList)}>Log Current User List</button>
           </div>
     );  
 

@@ -21,13 +21,7 @@ function RecipesAdded() {
 			<div className="col s10 offset-s1 card blue-grey darken-1">
 				<div className="card-content white-text">
 					<p className="card-title">What Recipes I've added</p>
-					{/* <table className="highlight">
-            <thead>
-              <tr className="grey darken-1">
-                <th>Recipes</th>
-              </tr>
-            </thead>
-            <tbody> */}
+
 					<ul className="collapsible">
 						{addedRecipes ? addedRecipes.map((r, idx) =>
 
@@ -49,11 +43,6 @@ function RecipesAdded() {
 							<li className="collection-item">Loading...</li>
 						}
 					</ul>
-					{/* <tr>
-                <td></td>
-              </tr>
-            </tbody>
-          </table> */}
 				</div>
 			</div>
 		</div>

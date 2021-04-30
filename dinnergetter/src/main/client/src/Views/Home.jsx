@@ -114,10 +114,10 @@ const Home = props =>{
             <div className="row">
                 {/* <div className="col m6 offset-m3 s12 row">
                     <ShoppingList />
-                </div> */}
+                </div>
                 <LoginButton />
                 <LogoutButton />
-                <Profile />
+                <Profile /> */}
             </div>
         </>
     );

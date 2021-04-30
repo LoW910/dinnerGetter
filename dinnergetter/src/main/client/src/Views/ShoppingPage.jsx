@@ -80,6 +80,7 @@ const ShoppingPage = () => {
                 console.log(response.data);
                 if(response.data){
                     let newList = [...curUser.shoppingList];
+                    ingredient.dummyUserEmail = "";
                     newList.push(ingredient);
                     setUser({...curUser, shoppingList:newList});
                 }
@@ -89,23 +90,18 @@ const ShoppingPage = () => {
             }).catch(err => console.log(err));
     }
 
-    const whatishappening = () => {
-        
-    }
 
 
     return (
         <div className="row">
 
-            <div className="col s12 m6 offset-m3">
+            <div className="col s12 m8 offset-m2 l6 offset-l3">
 
                 <ShoppingList
                     handleFormSubmit={handleFormSubmit}
                     handleFormChange={handleFormChange}
                 />
 
-                <p>{counter}</p>
-                <button onClick={whatishappening}>wtf</button>
 
             </div>
         </div>
