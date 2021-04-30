@@ -1,4 +1,4 @@
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import MyContext from "../MyContext";
@@ -10,7 +10,7 @@ const Nav = props =>{
         M.AutoInit();
     }, []);
     
-    const { recipe, setRecipe, searchResults, setSearchResults } = useContext(MyContext);
+    const { recipe, setRecipe, searchResults, setSearchResults, setRedirectLocation } = useContext(MyContext);
 
     const searchHandler = (e) =>{
         setRecipe( {name: e.target.value});
@@ -23,6 +23,13 @@ const Nav = props =>{
     }
     // console.log(searchResults);
 
+    const navigateThroughLandingPad = e => {
+        e.preventDefault();
+        setRedirectLocation(e.target.pathname);
+        navigate("/");
+    }
+
+
     return( 
         <div className="navbar-fixed">
             <nav>
@@ -30,9 +37,9 @@ const Nav = props =>{
                     <span className="brand-logo center">Dinner Picker</span>
                     <a data-target="mob-menu" className="sidenav-trigger" ><i className="material-icons">menu</i></a>
                     <ul className="left hide-on-med-and-down">
-                        <li><Link to="/dashboard" className="text-decoration-none  text-white">Home</Link></li>
-                        <li><Link to="/recipes" className="text-decoration-none text-white">My Recipes</Link></li>
-                        <li><Link to="/shopping" className="text-decoration-none text-white">Shopping</Link></li>
+                        <li><Link to="/dashboard" className="text-decoration-none  text-white" onClick={navigateThroughLandingPad}>Home</Link></li>
+                        <li><Link to="/recipes" className="text-decoration-none text-white" onClick={navigateThroughLandingPad}>My Recipes</Link></li>
+                        <li><Link to="/shopping" className="text-decoration-none text-white" onClick={navigateThroughLandingPad}>Shopping</Link></li>
                     </ul>
                     <form className="input-field right hide-on-med-and-down">
                         <input

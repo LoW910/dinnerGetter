@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { navigate } from "@reach/router";
 import axios from 'axios';
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import LoginButton from "../Components/LoginButton";
 import LogoutButton from "../Components/LogoutButton";
 import OnHand from "../Components/OnHand";
@@ -99,7 +99,7 @@ const Home = props =>{
                     {/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */}               
                 {/* </div> */} 
                 <div className="col m6 s12 row">
-                    <Recipes />
+                    <Recipes/>
                 </div>
                 <div className="col m6 s12 row">
                     <OnHand

@@ -1,14 +1,14 @@
 import { navigate } from '@reach/router';
-// import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import M from "materialize-css";
 import React, { useContext, useEffect, useState } from "react";
 import ShoppingList from "../Components/ShoppingList";
 import MyContext from "../MyContext";
 
-const ShoppingPage = props => {
+const ShoppingPage = () => {
     const { curUser, setUser, shoppingList, setShoppingList, setRedirectLocation, ingredient, setIngredient } = useContext(MyContext);
-
+    const { user } = useAuth0();
     const [counter, setCounter] = useState(0);
 
 
@@ -23,35 +23,55 @@ const ShoppingPage = props => {
             setShoppingList([]);
             return;
         }
+        //=======================================================
+        // api post to make sure user exists         
+        //=======================================================        
+        axios.post('http://localhost:8080/api/users/checkdb', user)
+            .then(res =>{
+                // console.log(res);
+                // I was just guessing on how the data is going to be returned idk if this below will work but fuck it
+                setUser({
+                    firstName: res.data.firstName,
+                    lastName: res.data.lastName,
+                    email: user.email,
+                    addedRecipes: res.data.addedRecipes,
+                    savedRecipes: res.data.savedRecipes,
+                    pantry: res.data.pantry,
+                    shoppingList: res.data.shoppingList
+                });
+                setShoppingList([ ...curUser.shoppingList]);
+                return res;
+            })
+            .then(res => {
+                let ingredients = curUser.shoppingList;
+                for (let i = 0; i < ingredients.length; i++) {
+                    if (typeof ingredients[i] === "number") {
+                        console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
+                        axios.get(`http://localhost:8080/api/ingredients/${ingredients[i]}`)
+                            .then(res => {
+                                console.log(res.data);
+                                ingredients.splice(i, 1, res.data);
+                                setUser({
+                                    ...curUser,
+                                    shoppingList: ingredients
+                                });
+                                console.log("vvvvvvvvvvvvvvvvvvv" +curUser.shoppingList)
+                                setShoppingList(ingredients);
 
-        // because of the way the relational database creates JSON objects, sometimes instead of getting an actual recipe we just get a recipe ID.  Which is not ideal for, you know, showing your recipe on the page
-        let ingredients = curUser.shoppingList;
-        for (let i = 0; i < ingredients.length; i++) {
-            if (typeof ingredients[i] === "number") {
-                console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
-                axios.get(`http://localhost:8080/api/ingredients/${ingredients[i]}`)
-                    .then(res => {
-                        ingredients.splice(i, 1, res.data);
-                        setUser({
-                            ...curUser,
-                            shoppingList: ingredients
-                        });
-                        console.log("vvvvvvvvvvvvvvvvvvv" +curUser.shoppingList)
-                        setShoppingList(ingredients);
-
-                    }).catch(err => console.log(err));
-            }
-        }
-        setShoppingList(curUser?.shoppingList);
+                            }).catch(err => console.log(err));
+                    }
+                }
+                setShoppingList(curUser?.shoppingList);
+            });
     }, []);
 
     const handleFormChange = e => {
         setIngredient({ name: e.target.value });
     }
-
     const handleFormSubmit = (e) => {
         e.preventDefault();
         ingredient.dummyUserEmail = curUser.email;
+
         // setIngredient({name: ""});
         console.log(ingredient.dummyUserEmail);
 
@@ -59,7 +79,9 @@ const ShoppingPage = props => {
             .then(response => {
                 console.log(response.data);
                 if(response.data){
-                    setShoppingList([...shoppingList, ingredient]);
+                    let newList = [...curUser.shoppingList];
+                    newList.push(ingredient);
+                    setUser({...curUser, shoppingList:newList});
                 }
                 // setShoppingList(response.data);
                 // setCounter(counter + 1);
@@ -80,11 +102,11 @@ const ShoppingPage = props => {
                 <ShoppingList
                     handleFormSubmit={handleFormSubmit}
                     handleFormChange={handleFormChange}
-                    shoppingList={shoppingList}
+                    curUser={curUser}
                 />
 
                 <p>{counter}</p>
-                <button onClick={whatishappening}></button>
+                <button onClick={whatishappening}>wtf</button>
 
             </div>
         </div>

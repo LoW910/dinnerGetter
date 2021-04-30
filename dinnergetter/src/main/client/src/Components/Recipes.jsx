@@ -10,6 +10,7 @@ function Recipes() {
   const [ instructions, setInstructions] = useState([]);
   const RECIPES = require("../static/recipelist");
   const { allRecipes, hasBeenPopulated, setIngredient, ingredient, curUser, shoppingList, setShoppingList, setUser} = useContext(MyContext);
+  
   useEffect( () => {
     M.AutoInit();
   }, []);
@@ -18,18 +19,29 @@ function Recipes() {
     console.log(name);
     let i = {name};
     i.dummyUserEmail = curUser.email;
-    console.log(i);
     
     axios.post('http://localhost:8080/api/ingredients/addtoshoppinglist', i)
     .then(response => {
-        console.log(response);
-        if(response.data){
-            setShoppingList([...shoppingList, i]);
-            setUser({...curUser, shoppingList});
-        }
+      console.log(response.data);
+      if(response.data){
+        let newList = [...curUser.shoppingList];
+        newList.push(ingredient);
+        setUser({...curUser, shoppingList:newList});
+        console.log(curUser.shoppingList);
+      }
     }).catch( err => console.log(err));
+  }
 
-
+  const removeIngredientFromList = (e, name) => {
+    console.log(name);
+    let i = {name};
+    i.dummyUserEmail = curUser.email;
+    axios.post('http://localhost:8080/api/ingredients/removefromshoppinglist', i)
+      .then( response => {
+        console.log(response.data);
+      }
+      )
+      .catch(err => console.log(err));
   }
   
   // useEffect(() => {
@@ -92,12 +104,12 @@ function Recipes() {
                               <li key={idx} className="collection-item row">
                                 <div className="col s10">{ing.name}</div>
                                 <div className="col s2">
-                                  {idx % 2 === 0?
+                                  {!curUser.shoppingList.map(x => x.name).includes(ing.name) ? 
                                     <button className="btn waves-effect waves-light blue accent-2" onClick={e => addIngredientToList(e, ing.name)}>
                                       <i className="material-icons">add_circle_outline</i>
                                     </button>
                                     :
-                                    <button className="btn waves-effect waves-dark red accent-2">
+                                    <button className="btn waves-effect waves-dark red accent-2" onClick={e => removeIngredientFromList(e, ing.name)}>
                                       <i className="material-icons">remove_circle_outline</i>
                                     </button>
                                   }

@@ -5,14 +5,21 @@ import React, { useContext } from "react";
 import MyContext from "../MyContext";
 
 const LandingPad = () => {
-    const { curUser, setUser, setPantry, setUserIngredientList, redirectLocation} = useContext(MyContext);
+    const { curUser, setUser, setPantry, setUserIngredientList, redirectLocation, setShoppingList, shoppingList} = useContext(MyContext);
     const { user, isAuthenticated } = useAuth0();
-    
+
+    //======================================================================
+    // checks if user is authenticated. if they are then it checks and/or adds user to the local database
+    //======================================================================
     if (isAuthenticated) {
         axios.post('http://localhost:8080/api/users/checkdb', user)
-            .then(res =>{
-                console.log(res);
-                // I was just guessing on how the data is going to be returned idk if this below will work but fuck it
+        .then(res =>{
+            console.log(res);
+            // I was just guessing on how the data is going to be returned idk if this below will work but fuck it
+            
+            //======================================================================
+            // sets user in context
+            //======================================================================
                 setUser({
                     firstName: res.data.firstName,
                     lastName: res.data.lastName,
@@ -36,6 +43,27 @@ const LandingPad = () => {
                 // // console.log(userIngredientList);
                 return res;
             })
+            .then(res=>{
+                let ingredients = curUser.shoppingList;
+                for (let i = 0; i < ingredients.length; i++) {
+                    if (typeof ingredients[i] === "number") {
+                        console.log("HERE IS OUR AXIOS CALL FOR NUMBER", ingredients[i]);
+                        axios.get(`http://localhost:8080/api/ingredients/${ingredients[i]}`)
+                            .then(res => {
+                                console.log(res.data);
+                                ingredients.splice(i, 1, res.data);
+                                setUser({
+                                    ...curUser,
+                                    shoppingList: ingredients
+                                });
+                                console.log("vvvvvvvvvvvvvvvvvvv" +curUser.shoppingList)
+                                setShoppingList(ingredients);
+        
+                            }).catch(err => console.log(err));
+                    }
+                }
+            }
+            )
             .then((res) =>{
 
                 let tempPantry = [...curUser.pantry];

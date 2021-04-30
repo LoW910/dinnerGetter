@@ -4,7 +4,7 @@ import MyContext from "../MyContext";
 // import axios from 'axios'
 
 export default function NewRecipeForm( props ) {
-    const {curUser, addedRecipes, setAddedRecipes} = useContext(MyContext);
+    const {curUser, setUser, addedRecipes, setAddedRecipes} = useContext(MyContext);
 
     // const [ingredientInput, setIngredientInput] = useState([""]);
     const [recipeInputs, setRecipeInputs] = useState({
@@ -48,6 +48,7 @@ export default function NewRecipeForm( props ) {
         .then(res => {            
             
             setAddedRecipes([...addedRecipes, res.data]);
+            setUser({...curUser, addedRecipes: [...addedRecipes, res.data]});
 
             let ingredients = [curUser.email];
             for(let i=0; i<recipeInputs.ingredients.length; i++){
@@ -97,6 +98,11 @@ export default function NewRecipeForm( props ) {
     //                  G O D       D A M N
     // ************************************************************
     // ============================================================
+
+
+
+
+
     const destroyHopesAndDreams = (e) => {
         e.preventDefault();
         let ingredients = [...recipeInputs.ingredients];
@@ -125,13 +131,13 @@ export default function NewRecipeForm( props ) {
                             type="text"
                             name="name"
                             id="name"
-                            placeholder="Name"
+                            // placeholder="Name"
                             className="white-text"
                             value={recipeInputs.name}
                             onChange={handleChange}
                         />
-                        <label htmlFor="name" className="active blue-grey-text text-lighten-4">
-                        {recipeInputs.name == "" ? "" : "Name"}
+                        <label htmlFor="name" className="blue-grey-text text-lighten-4">
+                        Name
                         </label>
                     </div>
 
@@ -141,12 +147,12 @@ export default function NewRecipeForm( props ) {
                             type="text"
                             name="steps"
                             id="steps"
-                            placeholder="Steps"
+                            // placeholder="Steps"
                             value={recipeInputs.steps}
                             onChange={handleChange}
                         />
-                        <label htmlFor="steps" className="active blue-grey-text text-lighten-4">
-                            {recipeInputs.steps == "" ? "" : "Steps"}
+                        <label htmlFor="steps" className="blue-grey-text text-lighten-4">
+                            Steps
                         </label>
                     </div>
 
@@ -154,15 +160,15 @@ export default function NewRecipeForm( props ) {
                         <div key={idx} style={{minHeight: "0px"}}>
                             {i === false? null :
                             <div key={idx} className="input-field col s12 row">
-                                <label htmlFor="ingredients" className="active blue-grey-text text-lighten-4">
-                                    {recipeInputs.ingredients[idx] == "" ? "" : "Ingredient"}
+                                <label htmlFor="ingredients" className="blue-grey-text text-lighten-4">
+                                    Ingredient
                                 </label>
 
                                 <input
                                     type="text"
                                     name={idx}
                                     id={`ingredients${idx}`}
-                                    placeholder="Ingredient"
+                                    
                                     value={recipeInputs.ingredients[idx]}
                                     onChange={handleChange}
                                     className="col s10 white-text"

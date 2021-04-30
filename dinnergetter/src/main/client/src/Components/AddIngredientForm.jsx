@@ -27,7 +27,7 @@ export default function AddIngredientForm(props) {
     // ************************************************************
     return (
         
-            <form className="col s12" onSubmit={handleSubmit}>
+            <form className="col s12 white" onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="input-field col s8">
                         <input

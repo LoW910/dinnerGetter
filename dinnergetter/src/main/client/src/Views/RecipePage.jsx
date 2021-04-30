@@ -47,11 +47,20 @@ const RecipePage = props =>{
     return(
         <div className="row">
             <div className="col m6 s12">
-                <RecipesSaved />
+                {/* 
+                EVENTUALLY WE'LL HAVE THIS HERE:
+                <RecipesSaved /> 
+                But for now we'll just do
+                */}
+                <RecipesAdded />
             </div>
             <div className="col m6 s12">
                 <NewRecipeForm />
+                {/*
+                EVENTUALLY THIS WILL PROBS GO BACK DOWN HERE:
                 <RecipesAdded />
+                but it's just on the left for now while we work out saving recipes
+                */}
                 <button className="btn purple accent-3 center" onClick={() => console.log(addedRecipes)}>Log Recipes</button>
             </div>
         </div>
